@@ -20,14 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
-// トラックボール・スクロール感度の設定
-#ifndef KEYBALL_CPI_DEFAULT
-#    define KEYBALL_CPI_DEFAULT 2000  // 通常のカーソル速度
-#endif
+// トラックボール・スクロール感度の設定（強制上書き）
+#undef KEYBALL_CPI_DEFAULT
+#define KEYBALL_CPI_DEFAULT 2000     // カーソル速度（大きいほど速い）
 
-#ifndef KEYBALL_SCROLL_DIVIDER
-#    define KEYBALL_SCROLL_DIVIDER 8  // スクロール感度
-#endif
+#undef KEYBALL_SCROLL_DIVIDER
+#define KEYBALL_SCROLL_DIVIDER 8     // スクロール感度（大きいほど緩やか・遅くなる）
+
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -63,9 +62,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Layer 1（左手親指スペース長押し）または Layer 3（設定画面）の時にスクロールモードを有効化
-    uint8_t layer = get_highest_layer(state);
-    keyball_set_scroll_mode(layer == 1 || layer == 3);
+    // レイヤー2が開いている時だけスクロールモードをオンにする
+    keyball_set_scroll_mode(get_highest_layer(state) == 2);
     return state;
 }
 
@@ -100,7 +98,6 @@ const uint16_t PROGMEM my_pgup[]   = {KC_M, KC_COMM, COMBO_END};  // M + ,
 const uint16_t PROGMEM my_pgdn[]   = {KC_COMM, KC_DOT, COMBO_END}; // , + .
 const uint16_t PROGMEM my_end[]    = {KC_COMM, KC_SLSH, COMBO_END};// , + /
 
-// --- 今回の追加分 ---
 const uint16_t PROGMEM my_sft[]    = {KC_Z, KC_X, COMBO_END};     // Z + X
 const uint16_t PROGMEM my_tab[]    = {KC_L, KC_MINS, COMBO_END};  // L + -
 
@@ -121,7 +118,6 @@ combo_t key_combos[] = {
     COMBO(my_pgdn, KC_PGDN),     // , + .         -> PageDown
     COMBO(my_end, KC_END),       // , + /         -> END
 
-    // --- 今回の追加分 ---
     COMBO(my_sft, KC_LSFT),      // Z + X         -> Shift
     COMBO(my_tab, KC_TAB),       // L + -         -> Tab
 };
