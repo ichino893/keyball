@@ -69,3 +69,22 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_layerinfo();
 }
 #endif
+
+
+// combo setting
+#ifdef COMBO_ENABLE
+
+// 1. 同時押しするキーの組み（定義）
+const uint16_t PROGMEM my_esc[]   = {KC_Q, KC_W, COMBO_END}; // Q + W
+const uint16_t PROGMEM my_btn1[]  = {KC_J, KC_I, COMBO_END}; // J + I
+const uint16_t PROGMEM my_btn2[]  = {KC_I, KC_O, COMBO_END}; // I + O
+const uint16_t PROGMEM my_bspc[]  = {KC_O, KC_P, COMBO_END}; // O + P
+
+// 2. 組み合わせと出力するキーの割り当て
+combo_t key_combos[] = {
+    COMBO(my_esc, KC_ESC),   // Q + W  -> ESC
+    COMBO(my_btn1, KC_BTN1), // J + I  -> マウス左クリック
+    COMBO(my_btn2, KC_BTN2), // I + O  -> マウス右クリック
+    COMBO(my_bspc, KC_BSPC), // O + P  -> BackSpace
+};
+#endif
