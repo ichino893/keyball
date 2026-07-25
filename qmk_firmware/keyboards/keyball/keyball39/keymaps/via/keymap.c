@@ -60,9 +60,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+// レイヤー制御：Layer 2 の時だけスクロールモードを有効化
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // レイヤー2が開いている時だけスクロールモードをオンにする
-    keyball_set_scroll_mode(get_highest_layer(state) == 2);
+    bool is_layer_2 = (get_highest_layer(state) == 2);
+    keyball_set_scroll_mode(is_layer_2);
     return state;
 }
 
@@ -115,7 +116,7 @@ combo_t key_combos[] = {
     COMBO(my_home, KC_HOME),     // N + M         -> HOME
     COMBO(my_pgup, KC_PGUP),     // M + ,         -> PageUp
     COMBO(my_pgdn, KC_PGDN),     // , + .         -> PageDown
-    COMBO(my_end, KC_END),       // . + /         -> END
+    COMBO(my_end, KC_END),       // , + /         -> END
     COMBO(my_sft, KC_LSFT),      // Z + X         -> Shift
     COMBO(my_tab, KC_TAB),       // L + -         -> Tab
 };
