@@ -27,7 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef KEYBALL_SCROLL_DIVIDER
 #define KEYBALL_SCROLL_DIVIDER 8     // スクロール感度（大きいほど緩やか・遅くなる）
 
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
@@ -116,8 +115,7 @@ combo_t key_combos[] = {
     COMBO(my_home, KC_HOME),     // N + M         -> HOME
     COMBO(my_pgup, KC_PGUP),     // M + ,         -> PageUp
     COMBO(my_pgdn, KC_PGDN),     // , + .         -> PageDown
-    COMBO(my_end, KC_END),       // , + /         -> END
-
+    COMBO(my_end, KC_END),       // . + /         -> END
     COMBO(my_sft, KC_LSFT),      // Z + X         -> Shift
     COMBO(my_tab, KC_TAB),       // L + -         -> Tab
 };
