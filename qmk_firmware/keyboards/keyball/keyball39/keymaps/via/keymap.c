@@ -20,6 +20,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
+// トラックボール・スクロール感度の設定
+#ifndef KEYBALL_CPI_DEFAULT
+#    define KEYBALL_CPI_DEFAULT 1200  // 通常のカーソル速度（初期値は900程度。数字を大きくすると速くなります）
+#endif
+
+#ifndef KEYBALL_SCROLL_DIVIDER
+#    define KEYBALL_SCROLL_DIVIDER 4  // スクロール感度（初期値は1〜2程度。数字を大きくすると移動量が小さく/緩やかになります）
+#endif
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
@@ -58,7 +67,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
     return state;
 }
-
+ 
 #ifdef OLED_ENABLE
 
 #    include "lib/oledkit/oledkit.h"
@@ -75,16 +84,38 @@ void oledkit_render_info_user(void) {
 #ifdef COMBO_ENABLE
 
 // 1. 同時押しするキーの組み（定義）
-const uint16_t PROGMEM my_esc[]   = {KC_Q, KC_W, COMBO_END}; // Q + W
-const uint16_t PROGMEM my_btn1[]  = {KC_J, KC_I, COMBO_END}; // J + I
-const uint16_t PROGMEM my_btn2[]  = {KC_I, KC_O, COMBO_END}; // I + O
-const uint16_t PROGMEM my_bspc[]  = {KC_O, KC_P, COMBO_END}; // O + P
+const uint16_t PROGMEM my_esc[]    = {KC_Q, KC_W, COMBO_END};     // Q + W
+const uint16_t PROGMEM my_btn1[]   = {KC_J, KC_I, COMBO_END};     // J + I
+const uint16_t PROGMEM my_btn2[]   = {KC_I, KC_O, COMBO_END};     // I + O
+const uint16_t PROGMEM my_bspc[]   = {KC_O, KC_P, COMBO_END};     // O + P
+const uint16_t PROGMEM my_p_mins[] = {KC_P, KC_MINS, COMBO_END}; // P + (Pの下)
+
+// --- 追加分 ---
+const uint16_t PROGMEM my_left[]   = {KC_J, KC_K, COMBO_END};     // J + K
+const uint16_t PROGMEM my_up[]     = {KC_K, KC_I, COMBO_END};     // K + I
+const uint16_t PROGMEM my_right[]  = {KC_K, KC_L, COMBO_END};     // K + L
+const uint16_t PROGMEM my_down[]   = {KC_K, KC_COMM, COMBO_END};  // K + ,
+const uint16_t PROGMEM my_home[]   = {KC_N, KC_M, COMBO_END};     // N + M
+const uint16_t PROGMEM my_pgup[]   = {KC_M, KC_COMM, COMBO_END};  // M + ,
+const uint16_t PROGMEM my_pgdn[]   = {KC_COMM, KC_DOT, COMBO_END}; // , + .
+const uint16_t PROGMEM my_end[]    = {KC_COMM, KC_SLSH, COMBO_END};// , + /
 
 // 2. 組み合わせと出力するキーの割り当て
 combo_t key_combos[] = {
-    COMBO(my_esc, KC_ESC),   // Q + W  -> ESC
-    COMBO(my_btn1, KC_BTN1), // J + I  -> マウス左クリック
-    COMBO(my_btn2, KC_BTN2), // I + O  -> マウス右クリック
-    COMBO(my_bspc, KC_BSPC), // O + P  -> BackSpace
+    COMBO(my_esc, KC_ESC),       // Q + W         -> ESC
+    COMBO(my_btn1, KC_BTN1),     // J + I         -> マウス左クリック
+    COMBO(my_btn2, KC_BTN2),     // I + O         -> マウス右クリック
+    COMBO(my_bspc, KC_BSPC),     // O + P         -> BackSpace
+    COMBO(my_p_mins, KC_DEL),    // P + (Pの下)  -> Delete
+
+    // --- 追加分 ---
+    COMBO(my_left, KC_LEFT),     // J + K         -> ← (左)
+    COMBO(my_up, KC_UP),         // K + I         -> ↑ (上)
+    COMBO(my_right, KC_RGHT),    // K + L         -> → (右)
+    COMBO(my_down, KC_DOWN),     // K + ,         -> ↓ (下)
+    COMBO(my_home, KC_HOME),     // N + M         -> HOME
+    COMBO(my_pgup, KC_PGUP),     // M + ,         -> PageUp
+    COMBO(my_pgdn, KC_PGDN),     // , + .         -> PageDown
+    COMBO(my_end, KC_END),       // , + /         -> END
 };
 #endif
