@@ -37,3 +37,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 #define AUTO_MOUSE_DEFAULT_LAYER 1
+
+// ==========================================
+// 1. レイヤー長押し（Hold/Tap）の応答速度調整
+// ==========================================
+// 長押しと判定する時間（デフォルト200ms -> 150msに短縮して素早くレイヤー化）
+#define TAPPING_TERM 150
+
+// タップ後の連続入力による誤作動を防ぎ、長押し入力を優先させる
+#define QUICK_TAP_TERM 0
+
+// キーを離した時点ですぐ単体タップと確定させる（モタツキ防止）
+#define PERMISSIVE_HOLD
+
+// ==========================================
+// 2. 同時押し（COMBO）の判定スピード調整
+// ==========================================
+// 2つのキーを同時に押したと判定する制限時間（デフォルト50ms -> 25msに短縮）
+#define COMBO_TERM 25
