@@ -54,4 +54,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 2. 同時押し（COMBO）の判定スピード調整
 // ==========================================
 // 2つのキーを同時に押したと判定する制限時間（デフォルト50ms -> 25msに短縮）
-#define COMBO_TERM 25
+#define COMBO_TERM 30
