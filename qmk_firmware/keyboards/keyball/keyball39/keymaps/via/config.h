@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // 1. レイヤー長押し（Hold/Tap）の応答速度調整
 // ==========================================
 // 長押しと判定する時間（デフォルト200ms -> 150msに短縮して素早くレイヤー化）
-#define TAPPING_TERM 150
+#define TAPPING_TERM 160
 
 // タップ後の連続入力による誤作動を防ぎ、長押し入力を優先させる
 #define QUICK_TAP_TERM 0
