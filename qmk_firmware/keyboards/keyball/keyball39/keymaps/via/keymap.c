@@ -67,19 +67,31 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-// ▼ 縦横両対応のスクロール制御処理（追加部分） ▼
+// ▼ 縦横両対応のスクロール制御処理（端数保持版） ▼
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     if (keyball_get_scroll_mode()) {
-        // ボールのX軸移動を水平スクロール(h)に、Y軸移動を垂直スクロール(v)に変換
-        mouse_report.h = mouse_report.x / KEYBALL_SCROLL_DIVIDER;
-        mouse_report.v = -mouse_report.y / KEYBALL_SCROLL_DIVIDER;
-        
-        // カーソル自体の移動(x, y)を無効化
+        static int16_t scroll_x_remainder = 0;
+        static int16_t scroll_y_remainder = 0;
+
+        // 前回切り捨てられた移動量を加算
+        int16_t total_x = mouse_report.x + scroll_x_remainder;
+        int16_t total_y = mouse_report.y + scroll_y_remainder;
+
+        // スクロール量の計算（水平: h, 垂直: v）
+        mouse_report.h = total_x / KEYBALL_SCROLL_DIVIDER;
+        mouse_report.v = -total_y / KEYBALL_SCROLL_DIVIDER; // マイナスで移動方向を調整
+
+        // 12で割り切れなかった余りを保存し、次回へ繰り越し
+        scroll_x_remainder = total_x % KEYBALL_SCROLL_DIVIDER;
+        scroll_y_remainder = total_y % KEYBALL_SCROLL_DIVIDER;
+
+        // マウスポインタ自体の移動を停止
         mouse_report.x = 0;
         mouse_report.y = 0;
     }
     return mouse_report;
 }
+
 
 #ifdef OLED_ENABLE
 
