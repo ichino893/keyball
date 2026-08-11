@@ -27,8 +27,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef KEYBALL_SCROLL_DIVIDER
 #define KEYBALL_SCROLL_DIVIDER 12     // スクロール感度（大きいほど緩やか・遅くなる）
 
-#define KEYBALL_SCROLL_H              // スクロールモード時に横スクロール（水平移動）を有効化
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
@@ -69,6 +67,20 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
+// ▼ 縦横両対応のスクロール制御処理（追加部分） ▼
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (keyball_get_scroll_mode()) {
+        // ボールのX軸移動を水平スクロール(h)に、Y軸移動を垂直スクロール(v)に変換
+        mouse_report.h = mouse_report.x / KEYBALL_SCROLL_DIVIDER;
+        mouse_report.v = -mouse_report.y / KEYBALL_SCROLL_DIVIDER;
+        
+        // カーソル自体の移動(x, y)を無効化
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
+
 #ifdef OLED_ENABLE
 
 #    include "lib/oledkit/oledkit.h"
@@ -93,14 +105,9 @@ const uint16_t PROGMEM my_p_mins[] = {KC_P, KC_MINS, COMBO_END}; // P + -
 
 const uint16_t PROGMEM my_left[]   = {KC_M, KC_COMM, COMBO_END}; // M + ,
 const uint16_t PROGMEM my_up[]     = {KC_K, KC_COMM, COMBO_END};  // K + ,
-const uint16_t PROGMEM my_right[] = {KC_COMM, KC_DOT, COMBO_END}; // , + .
+const uint16_t PROGMEM my_right[]  = {KC_COMM, KC_DOT, COMBO_END}; // , + .
 const uint16_t PROGMEM my_down[]   = {KC_COMM, KC_SLSH, COMBO_END}; // . + /
-// const uint16_t PROGMEM my_home[]   = {KC_N, KC_M, COMBO_END};  // N + M
-// const uint16_t PROGMEM my_pgup[]   = {KC_M, KC_COMM, COMBO_END}; // M + ,
-// const uint16_t PROGMEM my_pgdn[]   = {KC_COMM, KC_DOT, COMBO_END}; // , + .
-// const uint16_t PROGMEM my_end[]    = {KC_COMM, KC_SLSH, COMBO_END}; // . + /
 
-// const uint16_t PROGMEM my_sft[]    = {KC_Z, KC_X, COMBO_END};  // Z + X
 const uint16_t PROGMEM my_ent[]    = {KC_L, KC_MINS, COMBO_END};  // L + -
 const uint16_t PROGMEM my_tab[]    = {KC_R, KC_T, COMBO_END};     // R + T
 
@@ -109,18 +116,13 @@ combo_t key_combos[] = {
     COMBO(my_esc, KC_ESC),       // Q + E          -> ESC
     COMBO(my_btn1, KC_BTN1),     // J + I          -> マウス左クリック
     COMBO(my_btn2, KC_BTN2),     // I + O          -> マウス右クリック
-    // COMBO(my_bspc, KC_BSPC),  // O + P          -> BackSpace
     COMBO(my_p_mins, KC_DEL),    // P + -          -> Delete
 
     COMBO(my_left, KC_LEFT),     // M + ,          -> ← (左)
     COMBO(my_up, KC_UP),         // K + ,          -> ↑ (上)
     COMBO(my_right, KC_RGHT),    // , + .          -> → (右)
     COMBO(my_down, KC_DOWN),     // . + /          -> ↓ (下)
-    // COMBO(my_home, KC_HOME),  // N + M          -> HOME
-    // COMBO(my_pgup, KC_PGUP),  // M + ,          -> PageUp
-    // COMBO(my_pgdn, KC_PGDN),  // , + .          -> PageDown
-    // COMBO(my_end, KC_END),    // . + /          -> END
-    // COMBO(my_sft, KC_LSFT),   // Z + X          -> Shift
+
     COMBO(my_ent, KC_ENT),       // L + -          -> Enter
     COMBO(my_tab, KC_TAB),       // R + T          -> Tab
 };
