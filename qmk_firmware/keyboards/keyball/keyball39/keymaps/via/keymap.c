@@ -89,10 +89,10 @@ const uint16_t PROGMEM my_btn2[]   = {KC_I, KC_O, COMBO_END};     // I + O
 // const uint16_t PROGMEM my_bspc[]   = {KC_O, KC_P, COMBO_END};  // O + P
 const uint16_t PROGMEM my_p_mins[] = {KC_P, KC_MINS, COMBO_END}; // P + -
 
-const uint16_t PROGMEM my_left[]   = {KC_J, KC_K, COMBO_END};     // J + K
-const uint16_t PROGMEM my_up[]     = {KC_K, KC_I, COMBO_END};     // K + I
-const uint16_t PROGMEM my_right[]  = {KC_K, KC_L, COMBO_END};     // K + L
-const uint16_t PROGMEM my_down[]   = {KC_K, KC_COMM, COMBO_END};  // K + ,
+const uint16_t PROGMEM my_left[]   = {KC_M, KC_COMM, COMBO_END}; // M + ,
+const uint16_t PROGMEM my_up[]     = {KC_K, KC_COMM, COMBO_END};  // K + ,
+const uint16_t PROGMEM my_right[] = {KC_COMM, KC_DOT, COMBO_END}; // , + .
+const uint16_t PROGMEM my_down[]   = {KC_COMM, KC_SLSH, COMBO_END}; // . + /
 // const uint16_t PROGMEM my_home[]   = {KC_N, KC_M, COMBO_END};  // N + M
 // const uint16_t PROGMEM my_pgup[]   = {KC_M, KC_COMM, COMBO_END}; // M + ,
 // const uint16_t PROGMEM my_pgdn[]   = {KC_COMM, KC_DOT, COMBO_END}; // , + .
@@ -110,10 +110,10 @@ combo_t key_combos[] = {
     // COMBO(my_bspc, KC_BSPC),  // O + P          -> BackSpace
     COMBO(my_p_mins, KC_DEL),    // P + -          -> Delete
 
-    COMBO(my_left, KC_LEFT),     // J + K          -> ← (左)
-    COMBO(my_up, KC_UP),         // K + I          -> ↑ (上)
-    COMBO(my_right, KC_RGHT),    // K + L          -> → (右)
-    COMBO(my_down, KC_DOWN),     // K + ,          -> ↓ (下)
+    COMBO(my_left, KC_LEFT),     // M + ,          -> ← (左)
+    COMBO(my_up, KC_UP),         // K + ,          -> ↑ (上)
+    COMBO(my_right, KC_RGHT),    // , + .          -> → (右)
+    COMBO(my_down, KC_DOWN),     // . + /          -> ↓ (下)
     // COMBO(my_home, KC_HOME),  // N + M          -> HOME
     // COMBO(my_pgup, KC_PGUP),  // M + ,          -> PageUp
     // COMBO(my_pgdn, KC_PGDN),  // , + .          -> PageDown
