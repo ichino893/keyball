@@ -65,7 +65,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-// ▼ 縦横両対応のスクロール制御処理 ▼
+// ▼ 縦横両対応のスクロール制御処理（左右反転版） ▼
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     // 現在の最上位レイヤーが Layer 2 かどうかを判定
     if (get_highest_layer(layer_state) == 2) {
@@ -76,9 +76,9 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         int16_t total_x = mouse_report.x + scroll_x_remainder;
         int16_t total_y = mouse_report.y + scroll_y_remainder;
 
-        // スクロール量の計算（水平: h, 垂直: v）
-        mouse_report.h = total_x / KEYBALL_SCROLL_DIVIDER;
-        mouse_report.v = -total_y / KEYBALL_SCROLL_DIVIDER; // マイナスで向きを調整
+        // スクロール量の計算（hにマイナスを付けて左右反転）
+        mouse_report.h = -total_x / KEYBALL_SCROLL_DIVIDER;
+        mouse_report.v = -total_y / KEYBALL_SCROLL_DIVIDER;
 
         // 余りを保存し次回に繰り越し
         scroll_x_remainder = total_x % KEYBALL_SCROLL_DIVIDER;
@@ -116,7 +116,7 @@ const uint16_t PROGMEM my_p_mins[] = {KC_P, KC_MINS, COMBO_END}; // P + -
 const uint16_t PROGMEM my_left[]   = {KC_M, KC_COMM, COMBO_END}; // M + ,
 const uint16_t PROGMEM my_up[]     = {KC_K, KC_COMM, COMBO_END};  // K + ,
 const uint16_t PROGMEM my_right[]  = {KC_COMM, KC_DOT, COMBO_END}; // , + .
-const uint16_t PROGMEM my_down[]   = {KC_COMM, KC_SLSH, COMBO_END}; // . + /
+const uint16_t PROGMEM my_down[]   = {KC_L, KC_DOT, COMBO_END}; // L + .
 
 const uint16_t PROGMEM my_ent[]    = {KC_L, KC_MINS, COMBO_END};  // L + -
 const uint16_t PROGMEM my_tab[]    = {KC_R, KC_T, COMBO_END};     // R + T
@@ -131,7 +131,7 @@ combo_t key_combos[] = {
     COMBO(my_left, KC_LEFT),     // M + ,          -> ← (左)
     COMBO(my_up, KC_UP),         // K + ,          -> ↑ (上)
     COMBO(my_right, KC_RGHT),    // , + .          -> → (右)
-    COMBO(my_down, KC_DOWN),     // . + /          -> ↓ (下)
+    COMBO(my_down, KC_DOWN),     // L + .          -> ↓ (下)
 
     COMBO(my_ent, KC_ENT),       // L + -          -> Enter
     COMBO(my_tab, KC_TAB),       // R + T          -> Tab
