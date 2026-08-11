@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef KEYBALL_SCROLL_DIVIDER
 #define KEYBALL_SCROLL_DIVIDER 12     // スクロール感度（大きいほど緩やか・遅くなる）
 
+#define KEYBALL_SCROLL_H              // スクロールモード時に横スクロール（水平移動）を有効化
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
